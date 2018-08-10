@@ -4,7 +4,7 @@ tagline: "Joseph pallamidessi's personal blog" # A brief tagline for your site
 sidebar_image: /images/cover.jpg
 
 # Build settings
-markdown: redcarpet
+markdown: kramdown 
 highlighter: pygments
 baseurl: /blog # the subpath of your site, e.g. /blog/
 permalink: :year/:month/:day/:title
