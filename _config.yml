@@ -6,4 +6,5 @@ sidebar_image: /images/cover.jpg
 # Build settings
 markdown: redcarpet
 highlighter: pygments
-baseurl: /blog/ # the subpath of your site, e.g. /blog/
+baseurl: /blog # the subpath of your site, e.g. /blog/
+permalink: :year/:month/:day/:title
