@@ -7,4 +7,4 @@ sidebar_image: /images/cover.jpg
 markdown: kramdown 
 highlighter: rouge
 baseurl:  # the subpath of your site, e.g. /blog/
-permalink: /blog/:year/:month/:day/:title
+permalink: :year/:month/:day/:title
