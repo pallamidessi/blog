@@ -350,6 +350,15 @@ article a:hover {
   text-decoration: underline;
 }
 
+article .center {
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+}
+
+article em {
+  font-style:italic;
+}
 /* Posts List */
 
 ul.posts li {
