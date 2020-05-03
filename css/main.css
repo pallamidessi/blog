@@ -332,8 +332,15 @@ article p {
 article li {
   margin-left: 3em;
   margin-bottom: 9px;
-  list-style-type: disc;
+  list-style-type: none;
+  border-bottom: 1px solid #eeeeee;
 }
+
+article div.special li a {
+  float: right;
+  margin-right: 5px;
+}
+
 
 @media (max-width: 960px) {
   article li {
