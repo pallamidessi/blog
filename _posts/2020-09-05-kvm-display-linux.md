@@ -10,52 +10,52 @@ Following up on [Haim Gelfenbeyn's excellent article](https://haim.dev/posts/202
 ) on defining a software KVM display switch
 by using DCC/CI instructions, I made a Linux "version" with udev.
 
-It essentially the same idea, listening for usb device events to see if the usb KVM
+It essentially the same idea, listening for USB device events to see if the USB KVM
 switch is added or removed and issue a DCC/CI command to switch the monitor as well.
 
-I made it for my specific setup: I have a main, always on, Linux box and
+I made it for my specific setup: I have a main, always-on, Linux box and
 additional laptops, so all the logic is driving by the Linux machine, which
-simplify installation a bit. I used this [usb KVM
+simplifies installation a bit. I used this [USB KVM
 switch](https://www.amazon.co.uk/UGREEN-Sharing-Keyboard-Scanner-Printer-Black/dp/B01N6GD9JO?ref_=ast_sto_dp).
 
 
 ## DCC/CI commands with `dccutils`
 
-I didn't knew this was a thing, but it is possible to control monitors from a
+I didn't know this was a thing, but it is possible to control monitors from a
 computer by issuing [DCC/CI](https://en.wikipedia.org/wiki/Display_Data_Channel#DDC/CI
-) commands !  
+) commands!  
 `dccutils` is a tool to inspect the available capabilities and options of a monitor and emit commands such as "changing
 inputs", changing brightness, etc...  
 I followed [this post](https://friendo.monster/posts/switching-monitor-inputs-with-ddcutil.html
 ) to query my monitor's interface and tried first in a shell to
-change the input between displayport (my linux box) and HDMI-2 (my work
-macbook), which in my case resulted in those commands:
+change the input between DisplayPort (my Linux box) and HDMI-2 (my work
+MacBook), which in my case resulted in those commands:
 ~~~ bash 
-# Set input to displayport
+# Set input to DisplayPort
 sudo ddcutil setvcp 0x60 0x0f
 # Set input to HDMI 2
 sudo ddcutil setvcp 0x60 0x12
 ~~~
 
 Need to be run as sudo since DCC/CI is implemented with the I2C protocol, which
-is fairly low-level and bad instructions *could* brink/crash the monitor.
+is fairly low-level and bad instructions *could* brick/crash the monitor.
 
 ## Triggering on `udev rules`
 
-Cool, we know how to set the monitor input from a machine ! Now we just need to
-listen to usb event to see when the usb switch goes in or out and issue to
+Cool, we know how to set the monitor input from a machine! Now we just need to
+listen to USB event to see when the USB switch goes in or out and issue to
 corresponding `ddcutils` command. Enter `udev` !
 
-`udev` is a linux subsystem for managing device events, especially to respond to
+`udev` is a Linux subsystem for managing device events, especially to respond to
 "hotplug" events, and run arbitrary code based on matching rules. The events
-come from the kernel but the action are in userspace. Useful for thing like
-automatically backing up the content of a specific usb key to disk, etc...
+come from the kernel but the resulting actions are executed in userspace. Useful for
+things like automatically backing up the content of a specific USB key to disk, etc...
 
 Rules available in `/etc/udev/rules.d` on a Debian machine and look like this:
 ~~~ bash
-ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="XXX", ATTR{idProduct}=="YYY", RUN+="/my/handler/script.sh
+ACTION=="add", SUBSYSTEM=="USB", ATTR{idVendor}=="XXX", ATTR{idProduct}=="YYY", RUN+="/my/handler/script.sh
 ~~~
-Which in this case instruct: if an usb event of type "add" is detected with the
+Which in this case instructs: if an USB event of type "add" is detected with the
 device's vendor id of `XXX` and product of `YYY` then run the handler script. A good
 udev guide can be found [here](http://www.reactivated.net/writing_udev_rules.html)
 
@@ -65,8 +65,8 @@ sudo udevadm control --reload
 sudo udevadm trigger
 ~~~
 
-## Identifying the usb KVM device
-Almost there ! We just need to identify a few unique attributes for our rules.
+## Identifying the USB KVM device
+Almost there! We just need to identify a few unique attributes for our rules.
 I used `lsusb` and turned on and off the device a few times to identify it:
 
 ~~~ bash
@@ -75,7 +75,7 @@ Bus 007 Device 020: ID 05e3:0610 Genesys Logic, Inc. 4-port hub
 [...]
 ~~~
 
-Where `vendorId` is `05e3` and productId is `0610`. We will use those attribute to
+Where `vendorId` is `05e3` and productId is `0610`. We will use those attributes to
 match against "add" events and defined as `ATTR{vendorId}` and `ATTR{productId}` in the udev rule.  
 For the "remove" events, the story is a bit different: the remove event don't have
 the same attributes/fields due to the device being removed and thus some data are
@@ -133,8 +133,8 @@ sudo ddcutil setvcp 0x60 0x12
 ## Conclusion
 
 I'm very happy with my 23£ KVM and it only took a few hours to research and learn
-about udev and dcc/ci and have a working prototype. Will tidy up the the implementation a bit as there is
+about udev and dcc/ci and have a working prototype. Will tidy up the implementation a bit as there is
 zero error handling and logging. Another great missed opportunity to write code,
-instead of making some bash cruft !  
+instead of making some bash cruft!  
 
 ----
