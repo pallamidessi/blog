@@ -112,18 +112,18 @@ The simplest implementation, for me, would be:
 
 /etc/udev/rules.d/95-local.rules:
 ~~~ bash
-ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="05e3", ATTR{idProduct}=="0610", RUN+="/home/joseph/kvm_add.sh"
-ACTION=="remove", SUBSYSTEM=="usb", ENV{PRODUCT}=="5e3/610/9226", RUN+="/home/joseph/kvm_remove.sh"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="05e3", ATTR{idProduct}=="0610", RUN+="/usr/local/bin/kvm_added.sh"
+ACTION=="remove", SUBSYSTEM=="usb", ENV{PRODUCT}=="5e3/610/9226", RUN+="/usr/local/bin/kvm_removed.sh"
 ~~~
 
-kvm_add.sh:
+kvm_added.sh:
 ~~~ bash
 #!/usr/bin/env bash
 
 sudo ddcutil setvcp 0x60 0x0f
 ~~~
 
-kvm_remove.sh:
+kvm_removed.sh:
 ~~~ bash
 #!/usr/bin/env bash
 
