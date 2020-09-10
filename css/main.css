@@ -318,7 +318,6 @@ article .container {
 @media (max-width: 960px) {
   article {
     width: 100%;
-    overflow: visible;
   }
   article .container {
     padding: 25px !important;
