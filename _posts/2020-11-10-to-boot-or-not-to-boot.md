@@ -33,4 +33,4 @@ more than you want to know about the hows and the whys.
 
 ----
 
-[^0]: [1]: Tools should be more friendly in general. Or at least have [some personality](https://www.valgrind.org/docs/manual/manual-core.html#manual-core.warnings)
+[^0]: [1] Tools should be more friendly in general. Or at least have [some personality](https://www.valgrind.org/docs/manual/manual-core.html#manual-core.warnings)
