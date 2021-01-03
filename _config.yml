@@ -8,3 +8,5 @@ markdown: kramdown
 highlighter: rouge
 baseurl:  # the subpath of your site, e.g. /blog/
 permalink: :year/:month/:day/:title
+imagesurl: "/images/"
+thumbsurl: "/images/thumbnail/"
